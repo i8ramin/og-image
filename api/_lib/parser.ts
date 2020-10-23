@@ -3,7 +3,7 @@ import { parse } from 'url'
 import { ParsedRequest, Theme } from './types'
 
 export function parseRequest(req: IncomingMessage) {
-  const { pathname, query } = parse(req.url || '/', true)
+  const { pathname, query } = parse((req.url || '/').replace(/&amp%3B/g, '&'), true)
   const { fontSize, images, widths, heights, theme, md } = query || {}
 
   console.log('HTTP ' + req.url)
