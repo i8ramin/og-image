@@ -1,14 +1,12 @@
 import { IncomingMessage } from 'http'
 import { parse } from 'url'
-import {
-  ParsedRequest,
-  Theme
-} from './types'
+import { ParsedRequest, Theme } from './types'
 
 export function parseRequest(req: IncomingMessage) {
-  console.log('HTTP ' + req.url)
   const { pathname, query } = parse(req.url || '/', true)
   const { fontSize, images, widths, heights, theme, md } = query || {}
+
+  console.log('HTTP ' + req.url)
 
   if (Array.isArray(fontSize)) {
     throw new Error('Expected a single fontSize')
@@ -18,8 +16,10 @@ export function parseRequest(req: IncomingMessage) {
   }
 
   const arr = (pathname || '/').slice(1).split('.')
+
   let extension = ''
   let text = ''
+
   if (arr.length === 0) {
     text = ''
   } else if (arr.length === 1) {

@@ -152,15 +152,18 @@ type SetState = (state: Partial<AppState>) => void
 const App = (_: any, state: AppState, setState: SetState) => {
   const setLoadingState = (newState: Partial<AppState>) => {
     window.clearTimeout(timeout)
+
     if (state.overrideUrl && state.overrideUrl !== newState.overrideUrl) {
       newState.overrideUrl = state.overrideUrl
     }
+
     if (newState.overrideUrl) {
       timeout = window.setTimeout(() => setState({ overrideUrl: null }), 200)
     }
 
     setState({ ...newState, loading: true })
   }
+
   const {
     fileType = 'png',
     fontSize = '100px',
@@ -176,19 +179,33 @@ const App = (_: any, state: AppState, setState: SetState) => {
     selectedImageIndex = 0,
     overrideUrl = null,
   } = state
+
   const mdValue = md ? '1' : '0'
   const imageOptions = theme === 'light' ? imageLightOptions : imageDarkOptions
   const url = new URL(window.location.origin)
+
   url.pathname = `${encodeURIComponent(text)}.${fileType}`
-  url.searchParams.append('theme', theme)
-  url.searchParams.append('md', mdValue)
-  url.searchParams.append('fontSize', fontSize)
-  for (let image of images) {
-    url.searchParams.append('images', image)
+
+  if (theme !== 'light') {
+    url.searchParams.append('theme', theme)
   }
+
+  url.searchParams.append('md', mdValue)
+
+  if (fontSize !== '100px') {
+    url.searchParams.append('fontSize', fontSize)
+  }
+
+  if (images.length > 1) {
+    for (let image of images) {
+      url.searchParams.append('images', image)
+    }
+  }
+
   for (let width of widths) {
     url.searchParams.append('widths', width)
   }
+
   for (let height of heights) {
     url.searchParams.append('heights', height)
   }
@@ -201,6 +218,7 @@ const App = (_: any, state: AppState, setState: SetState) => {
       { className: 'pull-left' },
       H(
         'div',
+        { className: 'split-wrapper' },
         H(Field, {
           label: 'Theme',
           input: H(Dropdown, {
