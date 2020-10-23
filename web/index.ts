@@ -28,22 +28,6 @@ interface DropdownProps {
   options: DropdownOption[]
   value: string
   onchange: (val: string) => void
-  small: boolean
-}
-
-const Dropdown = ({ options, value, onchange, small }: DropdownProps) => {
-  const wrapper = small ? 'select-wrapper small' : 'select-wrapper'
-  const arrow = small ? 'select-arrow small' : 'select-arrow'
-  return H(
-    'div',
-    { className: wrapper },
-    H(
-      'select',
-      { onchange: (e: any) => onchange(e.target.value) },
-      options.map((o) => H('option', { value: o.value, selected: value === o.value }, o.text))
-    ),
-    H('div', { className: arrow }, '▼')
-  )
 }
 
 interface TextInputProps {
@@ -51,30 +35,35 @@ interface TextInputProps {
   oninput: (val: string) => void
 }
 
-const TextInput = ({ value, oninput }: TextInputProps) => {
-  return H(
-    'div',
-    { className: 'input-outer-wrapper' },
-    H(
-      'div',
-      { className: 'input-inner-wrapper' },
-      H('input', { type: 'text', value, oninput: (e: any) => oninput(e.target.value) })
-    )
-  )
-}
-
 interface ButtonProps {
   label: string
   onclick: () => void
 }
 
-const Button = ({ label, onclick }: ButtonProps) => {
-  return H('button', { onclick }, label)
-}
-
 interface FieldProps {
   label: string
   input: any
+}
+
+interface ToastProps {
+  show: boolean
+  message: string
+}
+
+const Dropdown = ({ options, value, onchange }: DropdownProps) => {
+  return H(
+    'select',
+    { onchange: (e: any) => onchange(e.target.value) },
+    options.map((o) => H('option', { value: o.value, selected: value === o.value }, o.text))
+  )
+}
+
+const TextInput = ({ value, oninput }: TextInputProps) => {
+  return H('input', { type: 'text', value, oninput: (e: any) => oninput(e.target.value) })
+}
+
+const Button = ({ label, onclick }: ButtonProps) => {
+  return H('button', { onclick }, label)
 }
 
 const Field = ({ label, input }: FieldProps) => {
@@ -83,11 +72,6 @@ const Field = ({ label, input }: FieldProps) => {
     { className: 'field' },
     H('label', H('div', { className: 'field-label' }, label), H('div', { className: 'field-value' }, input))
   )
-}
-
-interface ToastProps {
-  show: boolean
-  message: string
 }
 
 const Toast = ({ show, message }: ToastProps) => {
@@ -208,8 +192,6 @@ const App = (_: any, state: AppState, setState: SetState) => {
   for (let height of heights) {
     url.searchParams.append('heights', height)
   }
-
-  console.log('%c****** index', 'color:red', { state, imageOptions, selectedImageIndex, images, url })
 
   return H(
     'div',
@@ -405,4 +387,8 @@ const App = (_: any, state: AppState, setState: SetState) => {
   )
 }
 
-R(H(App), document.getElementById('app'))
+// don't load the app unldess there's a
+// localstorage key of `og-image`
+if (!!localStorage.getItem('og-image')) {
+  R(H(App), document.getElementById('app'))
+}
