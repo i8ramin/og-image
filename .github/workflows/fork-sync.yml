@@ -1,0 +1,28 @@
+name: Fork Sync
+
+# Sync changes from upstream to a `fork-sync` branch in this repo,
+# and opens a PR with the changes
+
+on:
+  schedule:
+  - cron: "0 */3 * * *" # every 3 hours
+
+jobs:
+  fork-sync:
+    name: Sync
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: repo-sync/github-sync@v2
+      name: Sync repo to branch
+      with:
+        source_repo: vercel/og-image
+        source_branch: main
+        destination_branch: fork-sync
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: repo-sync/pull-request@v2
+      name: Create pull request
+      with:
+        source_branch: fork-sync
+        destination_branch: main
+        github_token: ${{ secrets.GITHUB_TOKEN }}
