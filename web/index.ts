@@ -108,11 +108,11 @@ const markdownOptions: DropdownOption[] = [
 ]
 
 const imageLightOptions: DropdownOption[] = [
-  { text: 'Narrator', value: 'https://brand-narrator.s3.amazonaws.com/narrator-logo-mark-150.png' },
+  { text: 'Narrator', value: 'https://assets.narrator.ai/brand/narrator-logo-mark-150.png' },
 ]
 
 const imageDarkOptions: DropdownOption[] = [
-  { text: 'Narrator', value: 'https://brand-narrator.s3.amazonaws.com/narrator-logo-mark-150.png' },
+  { text: 'Narrator', value: 'https://assets.narrator.ai/brand/narrator-logo-mark-150.png' },
 ]
 
 const widthOptions = [

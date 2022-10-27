@@ -58,8 +58,8 @@ function getArray(stringOrArray: string[] | string | undefined): string[] {
 function getDefaultImages(images: string[], theme: Theme): string[] {
   const defaultImage =
     theme === 'light'
-      ? 'https://brand-narrator.s3.amazonaws.com/narrator-logo-mark-150.png'
-      : 'https://brand-narrator.s3.amazonaws.com/narrator-logo-mark-150.png'
+      ? 'https://assets.narrator.ai/brand/narrator-logo-mark-150.png'
+      : 'https://assets.narrator.ai/brand/narrator-logo-mark-150.png'
 
   if (!images || !images[0]) {
     return [defaultImage]
